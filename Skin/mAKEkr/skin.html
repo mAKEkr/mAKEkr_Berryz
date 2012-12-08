@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<title>Berryz WebShare</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scaleable=no">
+	<link rel="stylesheet" type="text/css" href="/$skin/css/bootstrap.min.css?action=SkinFile" />
+	<link rel="stylesheet" type="text/css" href="/$skin/css/core.css?action=SkinFile" />
+	<script src="/$skin/js/common.js?action=SkinFile"></script>
+	<script src="/$skin/js/jquery.min.js?action=SkinFile"></script>
+	<script src="/$skin/js/sortabletable.js?action=SkinFile"></script>
+	<script src="/$skin/js/bootstrap.min.js?action=SkinFile"></script>
+	<script src="/$skin/js/follower.js?action=SkinFile"></script>
+	<style type="text/css">
+	[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background-image:url("/$skin/img/glyphicons-halflings.png?action=SkinFile");background-repeat:no-repeat;margin-top:1px;}
+	.icon-white,.nav-tabs>.active>a>[class^="icon-"],.nav-tabs>.active>a>[class*=" icon-"],.nav-pills>.active>a>[class^="icon-"],.nav-pills>.active>a>[class*=" icon-"],.nav-list>.active>a>[class^="icon-"],.nav-list>.active>a>[class*=" icon-"],.navbar-inverse .nav>.active>a>[class^="icon-"],.navbar-inverse .nav>.active>a>[class*=" icon-"],.dropdown-menu>li>a:hover>[class^="icon-"],.dropdown-menu>li>a:hover>[class*=" icon-"],.dropdown-menu>.active>a>[class^="icon-"],.dropdown-menu>.active>a>[class*=" icon-"]{background-image:url("/$skin/img/glyphicons-halflings-white.png?action=SkinFile");}
+	</style>
+</head>
+
+<body>
+	<form id="pluginForm" method='POST' action=''>
+		<input type="HIDDEN" name="selectedFiles" value="">
+	</form>
+	<div class="header">
+		<a href="/"><h1>Berryz Webshare</h1></a>
+	</div>
+	<div class="content">
+	#if( $content )
+		$content
+		#if( $content_hide_back_button )
+		#else
+			<a href='.'>#U("[목록으로]")</a>
+		#end
+	#end
+	#if( $show_files )
+	<div id="wrap">
+		<div id ="breadcrumbs">
+		#if( $title )
+			$title
+		#end
+		#if( $address )
+		#if( $title )
+			<br/>
+		#end
+		#end
+		</div>
+		<div class="makekr_controlbox">
+			#if( $display_upper )
+				<a href='..'><i class="icon-arrow-up"></i>#U("상위 폴더로")</a>
+			#else
+				<i class="icon-arrow-up"></i><span class="disable">#U("상위 폴더로")</span>
+			#end
+
+			#if( $upload_path )
+			<a href="#upload" onclick="window.open('/$skin/upload_frame.html?action=SkinFile#$upload_path*$skin','_blank','width=750,height=200,toolbar=no,status=no,resizable=no');"><i class="icon-upload"></i>#U("업로드")</a>
+			#else
+				<i class="icon-upload"></i><span class="disable">#U("업로드")</span>
+			#end
+
+			#if( $upload_path )
+			<a href='#mkdir' onclick="onMkdir()"><i class="icon-folder-close"></i>#U("새 폴더")</a>
+			#else
+				<i class="icon-folder-close"></i><span class="disable">#U("새 폴더")</span>
+			#end
+			<i class="icon-plus"></i>
+			<select name="tact" onChange="OnPlugin(this)">
+				<option value="" selected>#U("추가 기능...")</option>
+				<option value="" disabled>-----------------------</option>
+				<option value="" disabled>#U("선택된 대상에 적용:")</option>
+				#if( $action_plugins )
+					#foreach( $action_plugins ) <option value="$id">&nbsp; &nbsp;$name</option> #end
+				#else
+					<option value="" disabled>&nbsp; &nbsp;#U("(사용 가능한 플러그인이 없음)")</option>
+				#end
+				<option value="" disabled>#U("다른 방식으로 보기:")</option>
+				#if( $view_plugins )
+					#foreach( $view_plugins ) <option value="$id">&nbsp; &nbsp;$name</option> #end
+				#else
+				<option value="" disabled>&nbsp; &nbsp;#U("(사용 가능한 플러그인이 없음)")</option>
+				#end
+			</select>
+			#if( $current_login_id )
+			<font style='color:#aaaaaa;'> #U("다음 계정으로 로그인됨: ") $current_login_id </font>
+			<a class="login" href=".?action=Logout"><i class="icon-off"></i>#U("로그아웃")</a>
+			#else
+			<a class="login" href=".?action=Login"><i class="icon-user"></i>#U("로그인")</a>
+			#end
+		</div>
+	</div>
+		
+	<form id="fileListForm">
+		<input type='hidden' name="checkboxes" />
+		<table class="sortable table table-hover" id='fileListTable' cellspacing='0'>
+		<thead>
+			<tr>
+				<th class="checkbox non_sortheader"><input type='CHECKBOX' name="selectAllCheckbox" onClick="ToggleSelectAll();" /></th>
+				<th class="icon non_sortheader"></th>
+				<th class="filename sortheader">
+				#U("이름")
+				</th>
+				<th class="filesize sortheader">
+				#U("크기")
+				</th>
+				<th class="filedate sortheader">
+				#U("수정한 날짜")
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach( $files )
+			<tr class="fileentry" id="tr#$link">
+				<td class="checkbox"><input type='checkbox' name="checkbox#$link" value="$link" onClick='HighlightRow("$link", this.checked)'/></td>
+				#if ( $is_folder )
+					<td class="icon"><i class="icon-folder-close"></i></td>
+					<td class="filename"><a href="$link">$name</a></td>
+				#else
+					<td class="icon"><i class="icon-file"></i></td>
+					<td class="filename"><a href="$link">$name</a></td>
+				#end
+				<td class="filesize" align="right">&nbsp;$size</td>
+				<td class="filedate" align="right">&nbsp;$date</td>
+			</tr>
+			#end
+			
+			#if( $files )
+			#else
+			<tr>
+				<td class="checkbox"></td>
+				<td class="icon"></td>
+				<td class="filename" style='color:gray'>
+					#U("폴더가 비었습니다.")
+				</td>
+				<td class="filesize" align="right">&nbsp;</td>
+				<td class="filedate" align="right">&nbsp;</td>
+			</tr>
+			#end <!--$files-->
+		</tbody>
+		</table>
+	</form>
+	#end <!--$show_files-->
+	</div>
+	#if( $upload_path )
+	<div style="display:none" id="MkdirForm">
+		<form method="GET" action="." name="MkdirForm">
+			<input type="hidden" name="action" value="MakeDirectory">
+			<input type="hidden" name="name">
+		</form>
+	</div>
+	#end
+	<div class="footer">
+		#if( $files )
+			<div class='totalAndFreeSpace'>
+			<span>#U("전체 크기:")</span><i class="icon-white icon-hdd"></i><span>$total_size #U("byte")
+			#if( $free_space )
+				/ #U("디스크 여유 공간:") $free_space #U("byte")
+			#end
+			</span>
+			</div>
+		#end
+		<p>Powered by <a href="http://berryz.upnl.org/webshare"target="_blank">Berryz WebShare v$version (rev.$revision)</a> Skined by <a href="http://ake.kr/" target="_blank">mAKEkr</a></p>
+	</div>
+	<script type="text/javascript">
+		var st1 = new SortableTable(
+			document.getElementById("fileListTable"),
+			["None", "None", "CaseInsensitiveString", "Number", "InvertTime"]
+			);
+		function ts_resortTable( v ){}
+	</script>
+	#if( $address )
+		<script type="text/javascript">
+		<!--
+			write_split_address("$address");
+		-->
+		</script>
+	#end
+</body>
+</html>

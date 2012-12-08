@@ -1,0 +1,3 @@
+based from BerryzWebshare album plugin.
+icon by glyphicons.
+made by mAKEkr(http://ake.kr/)

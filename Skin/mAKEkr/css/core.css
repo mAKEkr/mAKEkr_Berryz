@@ -1,0 +1,69 @@
+@charset "utf-8";
+
+/* 요소 초기화 */
+html,body{margin:0;padding:0}
+#pluginForm,#fileListForm{margin:0}
+.makekr_controlbox, #fileListForm, #breadcrumbs{width:100%;float:left}
+.header, .content, .footer, .totalAndFreeSpace{float:left;width:100%}
+h1{margin:0;padding:0}
+a{text-decoration:none}
+
+body{font-family:"Apple SD Gothic Neo","NanumGothic","Dotum";font-size:11pt}
+
+#breadcrumbs{height:26px;text-overflow:ellipsis;overflow:hidden}
+#breadcrumbs ul{list-style:none;margin:0;padding:0}
+#breadcrumbs ul li{margin:0;padding:0;float:left}
+#breadcrumbs ul li a{padding-top:5px; height:20px; display:block}
+
+.makekr_controlbox span.disable{opacity:0.5;font-color:#ddd}
+.makekr_controlbox select{margin-bottom:0}
+.login{float:right;height:15px;padding-top:6px}
+
+.content{margin-bottom:60px}
+#fileListTable{width:100%}
+#fileListTable tr input[type="checkbox"]{margin:0}
+#fileListTable .checkbox{vertical-align:middle}
+#fileListTable .checkbox, #fileListTable .icon{width:14px}
+#fileListTable .filedate{width:168px}
+#fileListTable .filesize{width:140px;font-size:100%}
+
+.footer{position:fixed;bottom:0;border-top:1px solid;border-bottom:1px solid}
+.totalAndFreeSpace{border-bottom:1px solid;padding:5px 0 5px 0}
+.totalAndFreeSpace span{margin-left:5px;font-size:11px;vertical-align:middle}
+.footer p{font-size:11px;padding:5px 0 5px 0;margin:0 0 0 5px;float:left}
+
+#MkdirForm{display:none}
+
+/*scrollfixed*/
+#wrap .fixed{top:-1px;position:fixed}
+#wrap .fixed.makekr_controlbox{top:25px;border-top:1px solid;border-bottom:1px solid}
+
+/*colorset*/
+body{background-color:#f2f2f2;color:#0b2126}
+h1{color:#435159}
+a{color:#435159}
+a:visited{color:#8a9ba6}
+#wrap .fixed{border-color:#ccc;background-color:#fff}
+.footer{background-color:#0b2126;border-color:#ccc}
+.footer p, .totalAndFreeSpace{color:#f2f2f2}
+.footer .totalAndFreeSpace{border-color:#f2f2f2}
+.footer p a{color:#d9d4c7}
+
+@media (max-width: 767px) {
+	.totalAndFreeSpace{display:none}
+	#fileListTable thead tr th.filedate,
+	#fileListTable tbody tr td.filedate{display:none}
+}
+
+@media (max-width: 540px) {
+	.login{padding-top:0}
+	.balloon{display:none}
+	#wrap .fixed{top:0;position:relative}
+	#wrap .fixed.makekr_controlbox{top:0;border:0}
+	.max480-disable{display:none !important}
+}
+
+@media (max-width: 460px) {
+	#fileListTable thead tr th.filesize,
+	#fileListTable tbody tr td.filesize{display:none}
+}

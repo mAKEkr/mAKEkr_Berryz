@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>Berryz WebShare Upload Form</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="expires" content="mon, 06 jan 1990 00:00:01 GMT" />
+	</head>
+
+	<body bgcolor="#FFFFFF" style='margin:0'>
+		<div style='margin:0px; font-family:Gulim; font-size:10pt;'>
+			<form method="post" name="uploadForm" enctype="multipart/form-data">
+				<input type="file" name="uploadfile" size="60" class="text"/>
+				<input type="button" name="addfile" value="Add File" class="button" onClick='onAddFile();' />
+				<br /><input type="submit" value="Upload" class="button" onClick='return onUpload();' />
+			</form>
+		</div>
+
+		<script language="JavaScript" type="text/javascript">
+///////////////////////////
+// http://kldp.net/snippet/detail.php?type=snippet&id=43
+String.prototype.trim = function()
+{
+	var pattern = !arguments[0] ?
+			/^\s+|\s+$/g :
+			new RegExp('^['+arguments[0]+']+|['+arguments[0]+']+$', 'g');
+
+	return this.replace(pattern, '');
+}
+
+// 초기화
+var uniqueKey = '[' + Math.random() + ']';
+var loc       = "" + document.location;
+var urlPath   = loc.substr(loc.indexOf("#")+1)
+document.uploadForm.action = urlPath + "?action=Upload&key="+uniqueKey;
+
+// 업로드 버튼이 눌렸을 때
+function onUpload()
+{
+	if(document.uploadForm.uploadfile.length)
+	{
+		for( var i = 0; i < document.uploadForm.uploadfile.length; ++i )
+		{
+			var localPath = document.uploadForm.uploadfile.item(i).value;
+			if( localPath.trim() != "" )
+			{
+				var pattern  = new RegExp('.*[\\\\/]', 'g');
+				var filename = localPath.replace(pattern, '');
+				parent.onBeginUpload(filename, uniqueKey);
+				return true;
+			}
+		}
+		alert(#QU("업로드할 파일을 선택해 주십시오."));
+		return false;
+	}
+	else
+	{
+		var localPath = document.uploadForm.uploadfile.value;
+		if( localPath.trim() != "" )
+		{
+			var pattern  = new RegExp('.*[\\\\/]', 'g');
+			var filename = localPath.replace(pattern, '');
+			parent.onBeginUpload(filename, uniqueKey);
+			return true;
+		}
+		else
+		{
+			alert(#QU("업로드할 파일을 선택해 주십시오."));
+			return false;
+		}
+	}
+}
+
+// 파일 추가 버튼이 눌렸을 때
+function onAddFile()
+{
+	var newEntry = document.createElement('span');
+	newEntry.innerHTML='<br /><input type="file" name="uploadfile" size="60" class="text" />';
+	var frm = document.uploadForm;
+	frm.insertBefore(newEntry, frm.addfile);
+}
+
+		</script>
+
+	</body>
+</html>
