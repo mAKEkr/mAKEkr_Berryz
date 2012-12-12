@@ -2,7 +2,7 @@ jQuery(function($){
 	var list_toggle = 0;
 	
 	$("#fileList").height($(window).height());
-	$(".control_page").height($(".main").height()-4);
+	$(".control_page").height($(window).height()-68);
 	$(window).resize(function(){
 		$("#fileList").height($(window).height());
 		$(".control_page").height($(".main").height()-4);

@@ -10,6 +10,16 @@ if(imageCount == 0){
 linkArray[imageCount] = '/?action=PluginResource&type=album&type=album_no_right.png';
 nameArray[imageCount] = 'no image';
 
+function onClickListItem(i){
+	currentImage = i;
+	Redraw();
+}
+
+hashpage = Number(window.location.hash.substr(1));
+if(hashpage != currentImage) {
+	currentImage = hashpage;
+}
+
 function onClickNext(){
 	currentImage++;
 	if(currentImage >= imageCount) currentImage = imageCount - 1;
@@ -22,13 +32,7 @@ function onClickPrev(){
 	Redraw();
 }
 
-function onClickListItem(i){
-	currentImage = i;
-	Redraw();
-}
-
 //var cachedImage = new Image();
-if(hashpage != currentImage) currentImage = hashpage;
 
 function Redraw(){
 	var prevIdx = currentImage - 1;
@@ -48,12 +52,14 @@ function Redraw(){
 	// 좌우 이동 버튼
 	if(currentImage > 0) { // 이전 페이지로 이동 가능
 		document.getElementById('button_left_on').style.display = 'block';
+		document.getElementById('control_prev').href = "#" + (prevIdx + 1);
 	}
 	else { // 이전 페이지로 이동 불가능
 		document.getElementById('button_left_on').style.display = 'none';
 	}
 	if(currentImage < imageCount-1) { // 다음 페이지로 이동 가능
 		document.getElementById('button_right_on').style.display = 'block';
+		document.getElementById('control_next').href = "#" + (nextIdx - 1);
 	}
 	else { // 다음 페이지로 이동 불가능
 		document.getElementById('button_right_on').style.display = 'none';
