@@ -12,15 +12,12 @@
 		var nameArray = new Array;
 		var imageCount = 0;
 		var currentImage = 0;
-		var zoomRatio = '100%';
+		var zoomRatio = 'width100per';
 		var hashpage = 0;
 		
 		hashpage = Number(window.location.hash.substr(1));
-		#foreach( $files )
-			linkArray[imageCount] = '$link';
-			nameArray[imageCount] = '$name';
-			imageCount++;
-		#end
+		var linkArray = new Array(#foreach($files) '$link',#end'');
+		var nameArray = new Array(#foreach($files) '$name',#end'');
 		</script>
 		<script type="text/javascript" src="/?action=PluginResource&type=album&file=common.js"></script>
 	</head>
@@ -34,8 +31,9 @@
 					<select name="zoom" onChange="onZoomChange(this)">
 						<option value="">Zoom Option</option>
 						<option value="real">original</option>
-						<option value="960px">960px</option>
-						<option value="100%" selected="selected">Fit to screen</option>
+						<option value="width960">960px</option>
+						<option value="width100per" selected="selected">Fit to screen</option>
+						<option value="height">세로사이즈 기준</option>
 					</select>
 				</div>
 

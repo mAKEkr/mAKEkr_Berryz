@@ -33,7 +33,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#828282', end
 #fileList ul li a{word-break:break-all;color:#fff;padding:6px 0;margin-left:10px;display:block;text-decoration:none}
 #fileList ul li.active a{font-weight:bold}
 
-#imagePane{text-align:center}
-
+#imagePane{text-align:center;}
+/*#imagePane a img{image-rendering: -webkit-optimize-contrast; image-rendering: optimize-contrast;}*/
 #fullscreen{z-index:99;position:fixed;bottom:0;right:0}
 .fullscreen_toggle{padding:15px 5px;border-top-left-radius:5px;background-color:#fff}
+
+/* Zoom Ratio(∫Ò¿≤) Configuration */
+#imagePane .width960{width:960px}
+#imagePane .width100per{width:100%}
